@@ -8,7 +8,7 @@ options(shiny.maxRequestSize = 30 * 1024 ^ 2)
 
 # the ui object has all the information for the user-interface
 ui <- fluidPage(
-  h1("Viral SpaceTime"),
+  h1("Viral Space Time"),
   theme = shinytheme("sandstone"),
 )
 
