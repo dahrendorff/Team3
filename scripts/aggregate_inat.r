@@ -4,7 +4,7 @@ rodents <- get_inat_obs(query = "Rodentia")
 head(rodents)
 rodents_filtered <- rodents[,c('longitude','latitude')]
 
-### from
+### from https://stackoverflow.com/questions/13316185/r-convert-zipcode-or-lat-long-to-county
 library(sp)
 library(maps)
 library(maptools)
