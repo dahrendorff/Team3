@@ -1,10 +1,12 @@
 install.packages('rinat')
 library(rinat)
-rodents <- get_inat_obs(query = "Rodentia")
+#rodents <- get_inat_obs(query = "Rodentia")
+rodents <- get_inat_obs(taxon_name = "Rodentia", place_id=__, geo=TRUE, maxresults = 10000)
+
 head(rodents)
 rodents_filtered <- rodents[,c('longitude','latitude')]
 
-### from https://stackoverflow.com/questions/13316185/r-convert-zipcode-or-lat-long-to-county
+####### block from https://stackoverflow.com/questions/13316185/r-convert-zipcode-or-lat-long-to-county
 library(sp)
 library(maps)
 library(maptools)
@@ -32,10 +34,11 @@ latlong2county <- function(pointsDF) {
     countyNames <- sapply(counties_sp@polygons, function(x) x@ID)
     countyNames[indices]
 }
-###
+###########
 
 rodentcounty <- latlong2county(rodents_filtered[apply(rodents_filtered,1,function(x) !any(is.na(x))),])
 
+agdat <- sapply(unique(rodentcounty), function(x) sum(rodentcounty == x, na.rm = TRUE))
 
 ## need to then aggregate by county and then find county centroid GPS location for input to model
 
