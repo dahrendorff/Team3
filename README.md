@@ -1,10 +1,10 @@
-# Project Name: Exploring COVID-19 mutation rate covariates  
+# Project Name: Viral SpaceTime
 ---
 **Team Leaders**: Ryan McMinds, Jesper Madsen
 
 **Team Members**:  Ann Mathew, Sofia	Bhatia, Samuel Coleman, Omkar	Dokur, Janelle Donglasan
 
-**GVN/USF mentors**:
+**GVN/USF mentors**: Dr. Alash'le G. Abimiku
 
 
 
