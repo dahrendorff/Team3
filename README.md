@@ -2,13 +2,15 @@
 ---
 **Team Leaders**: Ryan McMinds, Jesper Madsen
 
-**Team Members**:  Ann Mathew, Stephanie	Prescott, Sofia	Bhatia, Alexa	Moscatello, Samuel Coleman, Omkar	Dokur
+**Team Members**:  Ann Mathew, Sofia	Bhatia, Samuel Coleman, Omkar	Dokur, Janelle Donglasan
 
 **GVN/USF mentors**:
 
 
 
 ## Objectives
+
+Linking geospatial datasets with viral evolution rates
 
 ## Methods and Implementation
 
