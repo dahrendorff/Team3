@@ -2,6 +2,7 @@ library(shiny)
 library(plotly)
 library(tidyverse)
 library(shinythemes)
+library(leaflet)
 
 # increase max R-Shiny user-input file size from 5 to 30 MB
 options(shiny.maxRequestSize = 30 * 1024 ^ 2)
@@ -10,6 +11,7 @@ options(shiny.maxRequestSize = 30 * 1024 ^ 2)
 ui <- fluidPage(
   h1("Viral Space Time"),
   theme = shinytheme("sandstone"),
+  leafletOutput("mymap")
 )
 
 # define fonts for plot
@@ -36,6 +38,12 @@ m <- list(
 
 
 server <- function(input, output, session) {
+  output$mymap <- renderLeaflet({
+    leaflet() %>%
+      leaflet() %>%
+      addTiles() %>%  # Add default OpenStreetMap map tiles
+      addMarkers(lng=174.768, lat=-36.852, popup="The birthplace of R")
+  })
 }
 
 
