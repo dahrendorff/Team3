@@ -31,7 +31,7 @@ latlonrad <- DescTools:::DegToRad(latlon[,2:3])
 N <- nrow(latlon)
 
 tipdist <- geosphere:::distm(latlon, fun = function(x,y) geosphere:::distGeo(x,y,a=1))
-sigma_prior <- mean(cophenetic(phy)/tipdist)             
+sigma_prior <- mean(tipdist/cophenetic(phy))             
                               
 data <- list(N = N,
              phi_tips = latlonrad[,1],
