@@ -8,7 +8,7 @@ output_prefix <- file.path(wd,'outputs/gp')
 model_dir <- file.path(wd, 'models')
 model_name <- 'gp_continuous'
 
-sampling = paste(paste0('./', model_name),
+sampling_command <- paste(paste0('./', model_name),
                 paste0('data file=', file.path(output_prefix, 'data.json')),
                 #paste0('init=', file.path(output_prefix, 'inits.json')),
                 'output',
