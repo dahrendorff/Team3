@@ -13,9 +13,10 @@ data {
   vector<lower=0>[2*N-2] time; //temporal distances between adjacent tips/nodes
   int self[2*N-2]; // index for each tip/node in a single vector
   int ancestor[2*N-2]; // index for each tip/node's ancestor in a single vector
+  real<lower=0> sigma_prior;
 }
 parameters {
-  real<lower=0> sigma; //dispersal rate
+  real<lower=0> sigma_raw; //dispersal rate
   unit_vector[3] loc_anc[N-1]; //ancestral node location
 }
 transformed parameters {
@@ -33,5 +34,6 @@ transformed parameters {
   }
 }
 model {
-  time ~ wrapped_cauchy(d,sigma);
+  sigma_raw ~ std_normal();
+  time ~ wrapped_cauchy(d, sigma_raw * sigma_prior);
 }
