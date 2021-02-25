@@ -35,5 +35,5 @@ transformed parameters {
 }
 model {
   sigma_raw ~ std_normal();
-  time ~ wrapped_cauchy(d, sigma_raw * sigma_prior);
+  time ~ wrapped_cauchy(0, d * sigma_prior * sigma_raw);
 }
