@@ -21,7 +21,7 @@ functions {
 
       f2_mu = k_d_d2 * mdivide_right_tri_low(mdivide_left_tri_low(L, y)', L)';
 
-      v_pred = mdivide_left_tri_low(L, k_d_d2);
+      v_pred = mdivide_left_tri_low(L, k_d_d2');
 
       cov_f2
         = square(alpha)
