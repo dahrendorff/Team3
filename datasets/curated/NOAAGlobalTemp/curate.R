@@ -61,3 +61,9 @@ Lon=seq(2.5, 357.5, length=72)
 # Lat - latitudes
 # Lon - longitudes
 # gpcpst contains the entire dataset from 1880 to Jan-2017
+
+
+## addition RCM to quickly filter a test dataset
+
+testdat <- gpcpst[gpcpst[,ncol(gpcpst)] != -999.9, c(1,2,ncol(gpcpst))]
+write.table(testdat,file='testdat.txt',sep='\t',quote=FALSE,row.names=FALSE)
