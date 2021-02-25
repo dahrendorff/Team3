@@ -15,7 +15,7 @@ sampling_command <- paste(paste0('./', model_name),
                 paste0('file=', file.path(output_prefix, 'samples.txt')),
                 paste0('refresh=', 100),
                 'method=sample algorithm=hmc',
-                'stepsize=0.01',
+                #'stepsize=0.01',
                 'engine=nuts',
                 'max_depth=7',
                 'num_warmup=500',
@@ -26,22 +26,23 @@ sampling_command <- paste(paste0('./', model_name),
 testdat <- read.table(file.path(wd, 'datasets/curated/NOAAGlobalTemp/testdat.txt'),sep='\t',header=T)
 
 N <- nrow(testdat)
-d <- geosphere:::distm(testdat[,c(2,3)])
-
+                       
 N2 <- 100
 randomCartesian <- t(apply(matrix(rnorm(N2*3), nrow=N2), 1, function(x) x / sqrt(sum(x^2))))                   
 randomPolar <- t(apply(randomCartesian, 1, function(x) unlist(DescTools:::CartToSph(x[1],x[2],x[3]))))                       
 randomLatLon <- DescTools:::RadToDeg(randomPolar[,2:3])
 colnames(randomLatLon) <- colnames(testdat)[1:2]
 
-d2 <- geosphere:::distm(rbind(testdat[,c(2,1)],randomLatLon[,c(2,1)]))
-                                          
+d2 <- geosphere:::distm(rbind(testdat[,c(2,1)],randomLatLon[,c(2,1)]), fun = function(x,y) geosphere:::distGeo(x,y,a=1))
+
+y_norm <- testdat[,3] / sd(testdat[,3])                       
+                        
 data <- list(N = N,
-             d = d,
-             prior_scale = mean(d[lower.tri(d)]),
+             d = d2[1:N,1:N],
+             prior_scale = mean(d2[lower.tri(d2)]),
              N2 = N2,
              d2 = d2[(N+1):(N+N2),],
-             y = testdat[,3])
+             y = y_norm)
 
 #init <- list()
 
