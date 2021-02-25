@@ -2,7 +2,7 @@
 //https://mc-stan.org/docs/2_26/stan-users-guide/fit-gp-section.html
 functions {
   vector gp_pred_rng(matrix d,
-                     vector y;
+                     vector y,
                      real alpha,
                      real rho,
                      matrix L) {
