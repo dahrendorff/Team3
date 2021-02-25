@@ -1,23 +1,28 @@
 //gp_continuous
 //https://mc-stan.org/docs/2_26/stan-users-guide/fit-gp-section.html
 functions {
-  vector gp_pred_rng(matrix d,
+  vector gp_pred_rng(matrix d2,
                      vector y,
                      real alpha,
                      real rho,
-                     matrix L) {
-    int N2 = rows(d);
-    int N = cols(d) - N2;
+                     matrix d,
+                     real sigma) {
+    int N2 = rows(d2);
+    int N = cols(d2) - N2;
     vector[N2] f2;
     {
       matrix[N2,N] k_d_d2;
       vector[N2] f2_mu;
       matrix[N, N2] v_pred;
       matrix[N2, N2] cov_f2;
+      matrix[N,N] L
+        = cholesky_decompose(add_diag(square(alpha)
+                                      * exp(-square(d) / (2 * square(rho))),
+                                      square(sigma)));
 
       k_d_d2
         = square(alpha)
-          * exp(-square(d[,1:N]) / (2 * square(rho)));
+          * exp(-square(d2[,1:N]) / (2 * square(rho)));
 
       f2_mu = k_d_d2 * mdivide_right_tri_low(mdivide_left_tri_low(L, y)', L)';
 
@@ -48,12 +53,12 @@ parameters {
 }
 transformed parameters {
   real<lower=0> rho = rho_raw * prior_scale;
+}
+model {
   matrix[N,N] L
     = cholesky_decompose(add_diag(square(alpha)
                                   * exp(-square(d) / (2 * square(rho))),
                                   square(sigma)));
-}
-model {
   rho_raw ~ inv_gamma(5, 5);
   alpha ~ std_normal();
   sigma ~ std_normal();
@@ -61,7 +66,7 @@ model {
   y ~ multi_normal_cholesky(zeros_vector(N), L);
 }
 generated quantities {
-  vector[N2] f2 = gp_pred_rng(d2, y, alpha, rho, L);
+  vector[N2] f2 = gp_pred_rng(d2, y, alpha, rho, d, sigma);
   vector[N2] y2;
   for(n2 in 1:N2) y2[n2] = normal_rng(f2[n2], sigma);
 }
