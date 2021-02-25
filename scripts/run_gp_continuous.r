@@ -10,7 +10,8 @@ model_name <- 'gp_continuous'
 
 sampling_command <- paste(paste0('./', model_name),
                 paste0('data file=', file.path(output_prefix, 'data.json')),
-                #paste0('init=', file.path(output_prefix, 'inits.json')),
+                paste0('init=', file.path(output_prefix, 'inits.json')),
+                #'init=0',
                 'output',
                 paste0('file=', file.path(output_prefix, 'samples.txt')),
                 paste0('refresh=', 100),
@@ -44,9 +45,9 @@ data <- list(N = N,
              d2 = d2[(N+1):(N+N2),],
              y = y_norm)
 
-#init <- list()
+init <- list(rho_raw=0.1,alpha=1,sigma=1)
 
-#write_stan_json(init, file.path(output_prefix, 'inits.json'))
+write_stan_json(init, file.path(output_prefix, 'inits.json'))
 write_stan_json(data, file.path(output_prefix, 'data.json'))
 
 setwd(cmdstan_path())
