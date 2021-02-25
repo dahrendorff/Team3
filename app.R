@@ -10,7 +10,8 @@ library(dplyr)
 options(shiny.maxRequestSize = 30 * 1024 ^ 2)
 
 #import data
-data <- read.csv("quakes.csv")
+data <- read.csv("datasets/curated/NOAAGlobalTemp/testdat.csv")
+#data <- read.csv("quakes.csv")
 
 # define fonts for plot
 f1 <- list(family = "Arial, sans-serif",
@@ -38,24 +39,39 @@ m <- list(
 ui <- fluidPage(
   h1("Viral Space Time"),
   theme = shinytheme("sandstone"),
-  leafletOutput("mymap")
+  leafletOutput("mymap", height=600),
+  absolutePanel(top = 160, left = 80,
+                checkboxInput("heat", "Heatmap", FALSE)
+  )
 )
 
 
 server <- function(input, output, session) {
   #define the color pallate for the magnitidue of the earthquake
   pal <- colorNumeric(
-    palette = c('gold', 'orange', 'dark orange', 'orange red', 'red', 'dark red'),
+    palette = c('blue', 'deep skyblue', 'cyan', 'orange red', 'red', 'dark red'),
     domain = data$mag)
   
   output$mymap <- renderLeaflet({
-    leaflet(data) %>%
-      setView(lng = -99, lat = 45, zoom = 2) %>%
+    leaflet(data) %>% 
+      setView(lng = -98.557, lat = 37.26 , zoom = 3) %>%
       # Add two tiles
       addProviderTiles("Esri.WorldImagery", group="Satellite Map") %>%
+      addProviderTiles("CartoDB.DarkMatter", group="Dark Map") %>%
       addTiles(options = providerTileOptions(noWrap = TRUE), group="Street Map") %>%
-      addLayersControl(baseGroups = c("Satellite Map","Street Map"), options = layersControlOptions(collapsed = FALSE)) %>%
-      addHeatmap(lng=~longitude, lat=~latitude, intensity = ~mag, blur =  10, max = 0.05, radius = 15) 
+      addCircles(data = data, lat = ~ LAT, lng = ~ LON, weight = 1, radius = 25000, popup = ~as.character(mag), label = ~as.character(paste0("Temp Anomoly: ", sep = " ", mag)), color = ~pal(mag), fillOpacity = 0.5) %>%
+      addLayersControl(baseGroups = c("Dark Map","Satellite Map","Street Map"), options = layersControlOptions(collapsed = TRUE))
+  })
+  
+  observe({
+    proxy <- leafletProxy("mymap", data = data)
+    proxy %>% clearMarkers()
+    if (input$heat) {
+      proxy %>%  addHeatmap(lng=~LON, lat=~LAT, intensity = ~mag, blur =  3, max = 0.05, radius = 7) 
+    }
+    else{
+      proxy %>% clearHeatmap()
+    }
   })
 }
 
