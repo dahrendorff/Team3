@@ -49,13 +49,24 @@ server <- function(input, output, session) {
     domain = data$mag)
   
   output$mymap <- renderLeaflet({
-    leaflet(data) %>%
-      setView(lng = -99, lat = 45, zoom = 2) %>%
+    leaflet() %>%
+      setView(lng=174.768, lat=-36.852, zoom=17 ) %>%
       # Add two tiles
       addProviderTiles("Esri.WorldImagery", group="Satellite Map") %>%
       addTiles(options = providerTileOptions(noWrap = TRUE), group="Street Map") %>%
+      addMarkers(lng=174.768, lat=-36.852, popup="The birthplace of R") %>%
+      #addCircleMarkers(lng=174.767, lat=-36.852, radius=19 , color="black",  fillColor="red", stroke = FALSE, fillOpacity = 0.8, group="Red") %>%
+      #addCircleMarkers(lng=174.769, lat=-36.852, radius=18 , color="black",  fillColor="blue", stroke = FALSE, fillOpacity = 0.8, group="Blue") %>%
+      #addLayersControl(overlayGroups = c("Red","Blue") , baseGroups = c("Satellite Map","Street Map"), options = layersControlOptions(collapsed = FALSE)) %>%
       addLayersControl(baseGroups = c("Satellite Map","Street Map"), options = layersControlOptions(collapsed = FALSE)) %>%
-      addHeatmap(lng=~longitude, lat=~latitude, intensity = ~mag, blur =  10, max = 0.05, radius = 15) 
+      addHeatmap(
+        lng=174.767, lat=-36.852,intensity = 2,
+        blur = 20, max = 0.05, radius = 15
+      ) %>%
+      addHeatmap(
+        lng=174.769, lat=-36.852,intensity = 3,
+        blur = 10, max = 0.05, radius = 15
+      )
   })
 }
 
