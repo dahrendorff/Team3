@@ -42,18 +42,19 @@ data {
   vector[N] y; // continuous, normally distributed data
 }
 parameters {
-  real<lower=0> rho; // length-scale of GP correlation
+  real<lower=0> rho_raw; // length-scale of GP correlation
   real<lower=0> alpha; // variance explained by GP
   real<lower=0> sigma; // residual variance
 }
 transformed parameters {
+  real<lower=0> rho = rho_raw * prior_scale;
   matrix[N,N] L
     = cholesky_decompose(add_diag(square(alpha)
                                   * exp(-square(d) / (2 * square(rho))),
                                   square(sigma)));
 }
 model {
-  rho ~ inv_gamma(5, 5 * prior_scale);
+  rho_raw ~ inv_gamma(5, 5);
   alpha ~ std_normal();
   sigma ~ std_normal();
 
