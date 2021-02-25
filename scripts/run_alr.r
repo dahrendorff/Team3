@@ -30,6 +30,7 @@ latlonrad <- DescTools:::DegToRad(latlon[,2:3])
       
 N <- nrow(latlon)
 
+tipdist <- geosphere:::distm(latlon, fun = function(x,y) geosphere:::distGeo(x,y,a=1))
                
                               
 data <- list(N = N,
@@ -37,7 +38,8 @@ data <- list(N = N,
              theta_tips = latlonrad[,2],
              time = phy$edge.length,
              self = phy$edge[,1],
-             ancestor = phy$edge[,2])
+             ancestor = phy$edge[,2],
+             sigma_prior = sd(tipdist[lower.tri(tipdist)])/2)
 
 #init <- list()
 
