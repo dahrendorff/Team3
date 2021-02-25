@@ -1,5 +1,13 @@
 code to download and massage data, run models, and produce visuals for inclusion in the shiny app
 
+aggregate_inat.r - downloads inaturalist observations, will include code to aggregate these observations into counts-per-county and produce GPS coordinates for the cetnroids of the counties
+
+north-american-data-analysis.R - organize nextstrain phylogeny + gps data
+
+run_alr.r - estimate gps coordinates of ancestral sequences in a phylogeny based on time-scaled edges and gps-located tips
+
+run_gp_continuous.r - estimate value of a continuous variable at arbitrary points on the globe based on observations of that variable at other points on the globe
+
 
 
 2/24/2021 : 4:30 PM
