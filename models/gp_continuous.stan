@@ -30,7 +30,7 @@ functions {
 
       cov_f2
         = square(alpha)
-          * exp(-square(d[,(N+1):]) / (2 * square(rho)))
+          * exp(-square(d2[,(N+1):]) / (2 * square(rho)))
           - crossprod(v_pred);
 
       f2 = multi_normal_rng(f2_mu, add_diag(cov_f2, 1e-9));
